@@ -80,7 +80,13 @@ App.post('/ScoreCreate/:accesstype', function (Request, Response) {
 App.post('/ScoreRead/:accesstype', function (Request, Response) {
   DealPara(Request, Response, function (Para) {
     Monge.Mongo('score', 'Read', {}, function (Result) {
-      var Json = {status: '0', data: Result};
+      var Json = {
+        status:'0',
+        data:{
+          num:Result.length,
+          scores:Result
+        }
+      }
       Response.json(Json);
     });
   });
