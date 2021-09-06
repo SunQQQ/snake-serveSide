@@ -80,11 +80,22 @@ App.post('/ScoreCreate/:accesstype', function (Request, Response) {
 App.post('/ScoreRead/:accesstype', function (Request, Response) {
   DealPara(Request, Response, function (Para) {
     Monge.Mongo('score', 'Read', {}, function (Result) {
+
+      for(var i=0;i<Result.length;i++){
+        for(var a=i+1;a<Result.length;a++){
+          if(Result[i].score<Result[a].score){
+            var noName = Result[i];
+            Result[i] = Result[a];
+            Result[a] = noName;
+          }
+        }
+      }
+
       var Json = {
         status:'0',
         data:{
           num:Result.length,
-          scores:Result
+          scores:Result.slice(0,7)
         }
       }
       Response.json(Json);
@@ -92,7 +103,7 @@ App.post('/ScoreRead/:accesstype', function (Request, Response) {
   });
 });
 
-var server = App.listen(79, function () {
+var server = App.listen(8081, function () {
 
   var host = server.address().address
   var port = server.address().port
