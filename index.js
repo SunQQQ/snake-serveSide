@@ -95,7 +95,7 @@ App.post('/ScoreRead/:accesstype', function (Request, Response) {
         status:'0',
         data:{
           num:Result.length,
-          scores:Result.slice(0,7)
+          scores:Result.slice(0,8)
         }
       }
       Response.json(Json);
