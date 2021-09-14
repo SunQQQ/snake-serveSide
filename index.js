@@ -72,16 +72,13 @@ var GetParaCheckToken = function (Request, Response, OperationResponse) {
 // 留言页面相关
 App.post('/ScoreCreate/:accesstype', function (Request, Response) {
   DealPara(Request, Response, function (Para) {
-    // var score = Number(Para.score);
     var score = Para.score;
 
     if(util.isInteger(score)){   //score字段必须为大于等于0的整数，防止xss
       Monge.Mongo('score', 'Insert', Para, function () {
-        var Json = {status: '0', data: '插入成功'};
+        var Json = {status: '0', data: '插入成功'+util.isInteger(score) };
         Response.json(Json);
       });
-      // var Json = {status: '0', data: util.isInteger(score)};
-      // Response.json(Json);
     }else {
       var Json = {status: '1', data: '成绩字段必须为数字'};
       Response.json(Json);
