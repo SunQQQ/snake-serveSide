@@ -69,7 +69,7 @@ var GetParaCheckToken = function (Request, Response, OperationResponse) {
   }
 }
 
-// 留言页面相关
+// 创建分数接口
 App.post('/ScoreCreate/:accesstype', function (Request, Response) {
   DealPara(Request, Response, function (Para) {
     var score = Para.score,
@@ -87,6 +87,7 @@ App.post('/ScoreCreate/:accesstype', function (Request, Response) {
   });
 });
 
+// 分数榜单的前9名
 App.post('/ScoreRead/:accesstype', function (Request, Response) {
   DealPara(Request, Response, function (Para) {
     Monge.Mongo('score', 'Read', {}, function (Result) {
@@ -108,6 +109,17 @@ App.post('/ScoreRead/:accesstype', function (Request, Response) {
           scores:Result.slice(0,9)
         }
       }
+      Response.json(Json);
+    });
+  });
+});
+
+// 从新日期到老日期排序，展示所有数据
+App.post('/scoreReadByDate/:accesstype',function (Request,Response){
+  DealPara(Request, Response, function (Para) {
+    var PagnationData = Para.PagnationData ? Para.PagnationData : {SKip: 0, Limit: 1000};
+    Monge.Mongo('score', 'ReadByOrder', [{}, {createTime: -1}, PagnationData], function (Result) {
+      var Json = {status: '0', data: Result};
       Response.json(Json);
     });
   });
