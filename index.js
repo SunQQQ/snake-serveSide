@@ -125,6 +125,19 @@ App.post('/scoreReadByDate/:accesstype',function (Request,Response){
   });
 });
 
+// 删除成绩
+App.post('/scoreDelete/:accesstype', function (Request, Response) {
+  DealPara(Request, Response, function (Para) {
+    var Object = {};
+    Object._id = ObjectId(Para._id);
+
+    Monge.Mongo('score', 'Delete', Object, function () {
+      var Json = {status: '0', data: '标签删除成功'};
+      Response.json(Json);
+    });
+  });
+});
+
 var server = App.listen(8081, function () {
 
   var host = server.address().address
