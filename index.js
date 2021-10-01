@@ -118,7 +118,7 @@ App.post('/ScoreRead/:accesstype', function (Request, Response) {
 App.post('/scoreReadByDate/:accesstype',function (Request,Response){
   DealPara(Request, Response, function (Para) {
     var PagnationData = Para.PagnationData ? Para.PagnationData : {SKip: 0, Limit: 1000};
-    Monge.Mongo('score', 'ReadByOrder', [{}, {createTime: -1}, PagnationData], function (Result) {
+    Monge.Mongo('score', 'ReadByOrder', [{}, {_id: -1}, PagnationData], function (Result) {
       var Json = {status: '0', data: Result};
       Response.json(Json);
     });
