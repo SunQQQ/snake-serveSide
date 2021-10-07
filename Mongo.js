@@ -5,7 +5,7 @@ var MongoClient = require("mongodb").MongoClient;
 var Url = "mongodb://localhost:27017/";
 
 /**
- *
+ * Nodejs操作数据库的各种方法封装
  * @param Collection 要操作的表名
  * @param Type 要操作的类型，比如增删改查直接操作库
  * @param data 如果是只有一个参数，则直接传递该参数；如果有两个参数，传递数组
