@@ -138,6 +138,24 @@ App.post('/scoreDelete/:accesstype', function (Request, Response) {
   });
 });
 
+// 批量删除成绩
+App.post('/scoreMulDelete/:accesstype', function (Request, Response) {
+  DealPara(Request, Response, function (Para) {
+    var Object = {};
+    Para.idArray.forEach(function (item,i) {
+      Para.idArray[i] = ObjectId(item);
+    });
+    Object._id = {
+      $in: Para.idArray
+    };
+
+    Monge.Mongo('score', 'MulDelete', Object, function () {
+      var Json = {status: '0', data: '批量删除成功'};
+      Response.json(Json);
+    });
+  });
+});
+
 var server = App.listen(8081, function () {
 
   var host = server.address().address

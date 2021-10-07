@@ -62,6 +62,12 @@ function Mongo(Collection,Type, data, CallBack) {
           CallBack(res);
         });
       }
+    }else if(Type == 'MulDelete'){
+      DB.collection(Collection).remove(data,function (err,res) {
+        if(err) throw err;
+        db.close();
+        CallBack(res);
+      });
     }
   });
 }
