@@ -12,62 +12,74 @@ var Url = "mongodb://localhost:27017/";
  * @param CallBack 操作成功的回调函数
  * @constructor
  */
-
 function Mongo(Collection,Type, data, CallBack) {
   MongoClient.connect(Url, function (err, db) {
     var DB = db.db("snake");
-    if (Type == 'Insert') {
-      DB.collection(Collection).insertOne(data, function (err, res) {
-        if(err) throw err;
-        db.close();
-        CallBack(res);
-      });
-    } else if (Type == 'Delete') {
-      DB.collection(Collection).deleteOne(data,function (err,res) {
-        if(err) throw err;
-        db.close();
-        CallBack(res);
-      });
-    } else if (Type == 'Read') {
-      DB.collection(Collection).find(data).toArray(function (err, res) {
-        if(err) throw err;
-        db.close();
-        CallBack(res);
-      });
-    } else if(Type == 'Update'){
-      DB.collection(Collection).updateOne(data[0],data[1],function (err,res) {
-        if(err) throw  err;
-        db.close();
-        CallBack(res);
-      })
-      // 获取列表数量
-    }else if(Type == 'GetNum'){
-      DB.collection(Collection).find(data).toArray(function (err, res) {
-        if(err) throw err;
-        db.close();
-        CallBack(res.length);
-      });
-      // 获取排序后的列表
-    }else if(Type == 'ReadByOrder'){
-      if(data[2]){
-        DB.collection(Collection).find(data[0]).sort(data[1]).skip(data[2].Skip).limit(data[2].Limit).toArray(function (err, res) {
+    
+    switch (Type) {
+      case 'Insert':
+        DB.collection(Collection).insertOne(data, function (err, res) {
           if(err) throw err;
           db.close();
           CallBack(res);
         });
-      }else {
-        DB.collection(Collection).find(data[0]).sort(data[1]).toArray(function (err, res) {
+        break;
+
+      case 'Delete':
+        DB.collection(Collection).deleteOne(data,function (err,res) {
           if(err) throw err;
           db.close();
           CallBack(res);
         });
-      }
-    }else if(Type == 'MulDelete'){
-      DB.collection(Collection).remove(data,function (err,res) {
-        if(err) throw err;
-        db.close();
-        CallBack(res);
-      });
+        break;
+
+      case 'Read':
+        DB.collection(Collection).find(data).toArray(function (err, res) {
+          if(err) throw err;
+          db.close();
+          CallBack(res);
+        });
+        break;
+
+      case 'Update':
+        DB.collection(Collection).updateOne(data[0],data[1],function (err,res) {
+          if(err) throw  err;
+          db.close();
+          CallBack(res);
+        })
+        break;
+
+      case 'GetNum':
+        DB.collection(Collection).find(data).toArray(function (err, res) {
+          if(err) throw err;
+          db.close();
+          CallBack(res.length);
+        });
+        break;
+
+      case 'ReadByOrder':
+        if(data[2]){
+          DB.collection(Collection).find(data[0]).sort(data[1]).skip(data[2].Skip).limit(data[2].Limit).toArray(function (err, res) {
+            if(err) throw err;
+            db.close();
+            CallBack(res);
+          });
+        }else {
+          DB.collection(Collection).find(data[0]).sort(data[1]).toArray(function (err, res) {
+            if(err) throw err;
+            db.close();
+            CallBack(res);
+          });
+        }
+        break;
+
+      case 'MulDelete':
+        DB.collection(Collection).remove(data,function (err,res) {
+          if(err) throw err;
+          db.close();
+          CallBack(res);
+        });
+        break;
     }
   });
 }
